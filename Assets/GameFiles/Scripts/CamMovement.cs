@@ -47,7 +47,6 @@ public class CamMovement : MonoBehaviour
         {
             var ret = maxBack.z - camZoomTarg.transform.localPosition.z;
             ret = Mathf.Abs(ret);
-            Debug.Log(ret);
             return ret;
         }
     }

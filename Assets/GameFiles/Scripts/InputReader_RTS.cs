@@ -9,8 +9,11 @@ using UnityEngine.InputSystem;
 public class InputReader_RTS : MonoBehaviour, IA_RTS.IPlayerActions
 {
     [Required, SerializeField] CamMovement cam;
+    [Required, SerializeField] Selector selector;
+    [Required, SerializeField] Mover mover;
     IA_RTS ia;
-    private Vector2 moveInput;
+    Vector2 moveInput;
+
 
     // public void OnScroll(InputAction.CallbackContext context)
     // {
@@ -19,14 +22,14 @@ public class InputReader_RTS : MonoBehaviour, IA_RTS.IPlayerActions
     //     else if(scrollVal.y < 0) receiver.ScrollUpMoveLeft(true);
     // }
 
-    private void Awake()
+    void Awake()
     {
         ia = new IA_RTS();
         ia.Player.SetCallbacks(this);
         ia.Enable();
     }
 
-    private void Update()
+    void Update()
     {
         if (moveInput.sqrMagnitude > 0f)
             cam.Move(moveInput);
@@ -52,5 +55,17 @@ public class InputReader_RTS : MonoBehaviour, IA_RTS.IPlayerActions
     public void OnRightClick(InputAction.CallbackContext context)
     {
         
+    }
+
+    public void OnLeftClick(InputAction.CallbackContext context)
+    {
+        if(context.performed) selector.TrySelectSomething();
+    }
+
+    public void OnMouse(InputAction.CallbackContext context)
+    {
+        Vector2 pos = context.ReadValue<Vector2>();
+        selector.mousePos = pos;
+        mover.mousePos = pos;
     }
 }
