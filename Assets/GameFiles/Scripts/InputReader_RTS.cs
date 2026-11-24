@@ -31,11 +31,11 @@ public class InputReader_RTS : MonoBehaviour, IA_RTS.IPlayerActions
         if (moveInput.sqrMagnitude > 0f)
             cam.Move(moveInput);
     }
-    
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
     }
+    
 
     public void OnLook(InputAction.CallbackContext context)
     {
