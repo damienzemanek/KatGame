@@ -8,6 +8,7 @@ using static Selectable;
 public interface ISelectableCapabaility
 {
     void OnSelect(SelectCtx ctx);
+    void OnKeepSelect(SelectCtx ctx);
     void OnUnSelect(SelectCtx ctx);
 }
 
@@ -35,15 +36,17 @@ public class Selectable : MonoBehaviour
 
     public struct SelectCtx
     {
-        public readonly GameObject selected;
+        public readonly Selectable selected;
         public readonly ISelectableCapabaility[] capabilities;
         public Selector selector;
+        public Vector3 mousePos;
 
-        public SelectCtx(GameObject selected, ISelectableCapabaility[] capabilities, Selector selector)
+        public SelectCtx(Selectable selected, ISelectableCapabaility[] capabilities, Selector selector)
         {
             this.selected = selected;
             this.capabilities = capabilities;
             this.selector = selector;
+            mousePos = selector.mousePos;
         }
         
         public T Get<T>() where T : MonoBehaviour => capabilities.OfType<T>().FirstOrDefault();
@@ -52,14 +55,20 @@ public class Selectable : MonoBehaviour
 
     public void Select(Selector selector, out SelectCtx ctx)
     {
-        ctx = new SelectCtx(gameObject, Capabilities, selector);
+        ctx = new SelectCtx(this, Capabilities, selector);
         foreach (var capability in Capabilities)
             capability.OnSelect(ctx);
     }
 
+    public void KeepSelect(SelectCtx ctx)
+    {
+        foreach (var capability in Capabilities)
+            capability.OnKeepSelect(ctx);
+    }
+
     public void UnSelect(Selector selector, out SelectCtx ctx)
     {
-        ctx = new SelectCtx(gameObject, Capabilities, selector);
+        ctx = new SelectCtx(this, Capabilities, selector);
         foreach (var capability in Capabilities)
             capability.OnUnSelect(ctx);
     }

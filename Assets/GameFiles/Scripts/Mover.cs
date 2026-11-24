@@ -2,13 +2,13 @@
 using DesignPatterns.CreationalPatterns;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Mover : Singleton<Mover>
 {
     public bool HasMovableUnitSelected(out MovableUnit _selectedUnit) => (_selectedUnit = selectedUnit) != null;
-    
-    public Vector3 moveIndicatorPosLoc;
 
+    public float indicatorYLock = 0.1f;
     public float moveRayRange = 100f;
     public LayerMask floorMask;
     [Required] public Camera cam;
@@ -16,6 +16,7 @@ public class Mover : Singleton<Mover>
     [Required] public GameObject moveIndicator;
     [ReadOnly] public MovableUnit selectedUnit;
     [ReadOnly] public Vector3 mousePos;
+    [ReadOnly] public Vector3 worldPos;
     
 
     public void MoveAvaliable()
@@ -37,8 +38,15 @@ public class Mover : Singleton<Mover>
 
     public void PollForMoving()
     {
-        Ray rayMouse = cam.ScreenPointToRay(Input.mousePosition);
+        Ray rayMouse = cam.ScreenPointToRay(mousePos);
         if (!Physics.Raycast(rayMouse.origin, rayMouse.direction, out RaycastHit hit, moveRayRange, floorMask)) return;
         Debug.DrawLine(rayMouse.origin, hit.point, Color.aquamarine);
+        worldPos = new Vector3(hit.point.x, indicatorYLock, hit.point.z);
+        moveIndicator.transform.position = worldPos;
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(worldPos, 1f);
     }
 }

@@ -7,6 +7,11 @@ public class Inspectable : MonoBehaviour, ISelectableCapabaility
         InspectorUI.Instance.Inspect(this);
     }
 
+    public void OnKeepSelect(Selectable.SelectCtx ctx)
+    {
+        
+    }
+
     public void OnUnSelect(Selectable.SelectCtx ctx)
     {
         InspectorUI.Instance.UnInspect();

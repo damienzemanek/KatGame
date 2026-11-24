@@ -17,11 +17,12 @@ public class Selector : MonoBehaviour
     }
     
     public float selectorRayDist = 100f;
+    public LayerMask selectionMask;
     
     [ReadOnly] public SelectionState selectionState;
     [ReadOnly] public Selectable currentlySelected;
     [ReadOnly] public Selectable currentlyHovered;
-    [ReadOnly] public Vector2 mousePos;
+    [ReadOnly] public Vector3 mousePos;
     [BoxGroup("Refs")] [Required] public Camera cam;
     [BoxGroup("Refs")] [Required] public InputReader_RTS inputReader;
     
@@ -39,9 +40,9 @@ public class Selector : MonoBehaviour
     {
         currentlyHovered = null;
         Ray rayMouse = cam.ScreenPointToRay(mousePos);
-        Debug.DrawRay(rayMouse.origin, rayMouse.direction * selectorRayDist, Color.red);
-        if (!Physics.Raycast(rayMouse.origin, rayMouse.direction, out RaycastHit hit, selectorRayDist)) return;
+        if (!Physics.Raycast(rayMouse.origin, rayMouse.direction, out RaycastHit hit, selectorRayDist, selectionMask)) return;
         if (!hit.collider.gameObject.Has(out Selectable hover)) return;
+        Debug.DrawLine(rayMouse.origin, hit.point, Color.red);
         currentlyHovered = hover;
     }
 
