@@ -35,6 +35,7 @@ public abstract class Detector : MonoBehaviour, IDetectionResponsive
     public UnityEvent<GameObject> OnUndetectINSP;
     
     
+    
     public void SetGate(DetectionGate gate) => this.gate = gate;
     public bool DoesntHandle(DetectionState state) => (this.state & state) != state;
     

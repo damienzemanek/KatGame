@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bae29176115486396b7a93b40ac4263, type: 3}
+  m_Name: Warrior
+  m_EditorClassIdentifier: Assembly-CSharp::UnitCfg
+  entityName: Warrior
+  maxHealth: 5
+  strengthValue: 1
+  dmg: 1
+  attackIntervalDuration: 1

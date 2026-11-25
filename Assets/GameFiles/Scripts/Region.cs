@@ -27,7 +27,7 @@ public class Region : MonoBehaviour
     public class Army
     {
         public string ownerName;
-        [ShowInInspector] public int totalStrength => ownables.Sum(o => o.strengthValue);
+        [ShowInInspector] public int totalStrength => ownables.Sum(o => o.cfg.strengthValue);
         public List<Ownable> ownables = new();
     }
 
@@ -84,11 +84,14 @@ public class Region : MonoBehaviour
             capturingOwner = strongest.ownerName;
             captureProgress = 0f;
         }
-
+        
         captureProgress += pressure * Time.fixedDeltaTime;
+        
+        if (captureProgress > captureThreshold)
+            captureProgress = captureThreshold;
 
-        // Capture completed.
-        if (captureProgress >= captureThreshold) Capture();
+        if (armies.Count > 1) return; // Have to be the only army to fully captrure
+        if (captureProgress >= captureThreshold) Capture();  // Capture completed.
     }
 
     public void Capture()
@@ -100,7 +103,10 @@ public class Region : MonoBehaviour
 
         capturingOwner = null;
         captureProgress = 0f;
-        txt_ownerName.text = (isOwned) ? string.Format(k_regionOwnedNameFormat, ownerName) : "Not Owned";
+        txt_ownerName.text = 
+            (isOwned)
+            ? string.Format(k_regionOwnedNameFormat, ownerName)
+            : "Not Owned";
     }
 
     void OnTriggerEnter(Collider other)
